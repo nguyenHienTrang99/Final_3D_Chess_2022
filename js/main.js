@@ -6,6 +6,7 @@ let b = 8;
 let pieces = [];
 let selected = null;
 let select, moves, capture;
+let btnRed , btnWhite;
 let turn = 'white';
 let mode = 'none';
 
@@ -16,6 +17,16 @@ function setup() {
     rvel = createVector(-5, 0, 0);
     colorList = ['#A0522D', '#DAA520'];
     siz = floor(height / 10);
+	btnRed = createButton('RED WIN');
+	btnRed.position(windowWidth/5, windowHeight/2);
+	btnWhite = createButton('WHITE WIN');
+	btnWhite.position(windowWidth*0.75, windowHeight/2);
+	btnRed.size(100, 100);
+    btnRed.style("background-color", 'white'); 
+    btnRed.style('border-radius', '12px');
+	btnWhite.size(100, 100);
+    btnWhite.style("background-color", 'white'); 
+    btnWhite.style('border-radius', '12px');
     order = [
         ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
         ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
@@ -95,15 +106,18 @@ function keyPressed() {
                     .origColor == 'white') {
                     capture.play();
                     mode = 'red';
+					let col = color(25, 23, 200, 50);
+					btnRed.style('background-color', col);
                 } else if (whosThere()
                     .type == 'K' && whosThere()
                     .origColor == 'red') {
                     capture.play()
                     mode = 'white'
+					let col = color(25, 23, 200, 50);
+					btnWhite.style('background-color', col);
                 };
                 capture.play();
-                whosThere()
-                    .tpos.x = width / 2
+                whosThere().tpos.x = width / 2
                 selected.color = selected.origColor;
                 selected.tpos.x = cursorPiece.tpos.x;
                 selected.tpos.z = cursorPiece.tpos.z;
