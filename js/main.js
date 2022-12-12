@@ -6,7 +6,7 @@ let b = 8;
 let pieces = [];
 let selected = null;
 let select, moves, capture;
-let btnRed , btnWhite;
+let btnRed, btnWhite;
 let turn = 'white';
 let mode = 'none';
 
@@ -17,15 +17,15 @@ function setup() {
     rvel = createVector(-5, 0, 0);
     colorList = ['#A0522D', '#DAA520'];
     siz = floor(height / 10);
-	btnRed = createButton('RED WIN');
-	btnRed.position(windowWidth/5, windowHeight/2);
-	btnWhite = createButton('WHITE WIN');
-	btnWhite.position(windowWidth*0.75, windowHeight/2);
-	btnRed.size(100, 100);
-    btnRed.style("background-color", 'white'); 
+    btnRed = createButton('RED WIN');
+    btnRed.position(windowWidth / 5, windowHeight / 2);
+    btnWhite = createButton('WHITE WIN');
+    btnWhite.position(windowWidth * 0.75, windowHeight / 2);
+    btnRed.size(100, 100);
+    btnRed.style("background-color", 'white');
     btnRed.style('border-radius', '12px');
-	btnWhite.size(100, 100);
-    btnWhite.style("background-color", 'white'); 
+    btnWhite.size(100, 100);
+    btnWhite.style("background-color", 'white');
     btnWhite.style('border-radius', '12px');
     order = [
         ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'],
@@ -50,14 +50,14 @@ function setup() {
     let cx = (-3.5 * siz) + (5 * siz)
     let cz = (-3.5 * siz) + (4 * siz)
     cursorPiece = new Piece(height / 50, createVector(cx, 0, cz), 'C', 'white')
-    for (let row = 0; row < a; row += 1) {
-        for (let col = 0; col < b; col += 1) {
-            if (order[row][col] != 'X') {
+    for(let row = 0; row < a; row += 1) {
+        for(let col = 0; col < b; col += 1) {
+            if(order[row][col] != 'X') {
                 let x = (-3.5 * siz) + (col * siz)
                 let z = (-3.5 * siz) + (row * siz)
                 let pos = createVector(x, 0, z)
                 let pieceColor = 'brown';
-                if (row < 2) pieceColor = 'red';
+                if(row < 2) pieceColor = 'red';
                 else pieceColor = 'white';
                 pieces.push(new Piece(height / 30.75, pos, order[row][col], pieceColor));
             }
@@ -67,20 +67,20 @@ function setup() {
 
 
 function showMoves(type) {
-    if (type == 'F') {
-        for (let piece of pieces) {
+    if(type == 'F') {
+        for(let piece of pieces) {
             piece.type = 'N';
         }
     }
 }
 
 function keyPressed() {
-    if (turn != 'END') {
-        if (keyCode == 32) {
-            for (let p of pieces) {
+    if(turn != 'END') {
+        if(keyCode == 32) {
+            for(let p of pieces) {
                 p.color = p.origColor;
-                if (p.tpos.x == cursorPiece.tpos.x && p.tpos.z == cursorPiece.tpos.z && p.color == turn) {
-                    if ((turn == 'white' && p.color == 'white') || (turn == 'red' && p.color == 'red')) {
+                if(p.tpos.x == cursorPiece.tpos.x && p.tpos.z == cursorPiece.tpos.z && p.color == turn) {
+                    if((turn == 'white' && p.color == 'white') || (turn == 'red' && p.color == 'red')) {
                         select.play();
                         selected = p;
                         p.color = 'yellow';
@@ -91,30 +91,30 @@ function keyPressed() {
             }
         }
 
-        if (keyCode == 13 && selected) {
-            if (whosThere() == null) {
+        if(keyCode == 13 && selected) {
+            if(whosThere() == null) {
                 select.play();
                 selected.color = selected.origColor;
                 selected.tpos.x = cursorPiece.tpos.x;
                 selected.tpos.z = cursorPiece.tpos.z;
                 switchTurn();
 
-            } else if (whosThere()
+            } else if(whosThere()
                 .origColor != turn) {
-                if (whosThere()
+                if(whosThere()
                     .type == 'K' && whosThere()
                     .origColor == 'white') {
                     capture.play();
                     mode = 'red';
-					let col = color(25, 23, 200, 50);
-					btnRed.style('background-color', col);
-                } else if (whosThere()
+                    let col = color(25, 23, 200, 50);
+                    btnRed.style('background-color', col);
+                } else if(whosThere()
                     .type == 'K' && whosThere()
                     .origColor == 'red') {
                     capture.play()
                     mode = 'white'
-					let col = color(25, 23, 200, 50);
-					btnWhite.style('background-color', col);
+                    let col = color(25, 23, 200, 50);
+                    btnWhite.style('background-color', col);
                 };
                 capture.play();
                 whosThere().tpos.x = width / 2
@@ -127,35 +127,35 @@ function keyPressed() {
             selected = null;
         }
 
-        if (keyCode == LEFT_ARROW && cursorPiece.tpos.x > (-3 * siz)) {
+        if(keyCode == LEFT_ARROW && cursorPiece.tpos.x > (-3 * siz)) {
             moves.play();
             cursorPiece.tpos.x -= siz;
         }
-        if (keyCode == RIGHT_ARROW && cursorPiece.tpos.x < (3 * siz)) {
+        if(keyCode == RIGHT_ARROW && cursorPiece.tpos.x < (3 * siz)) {
             moves.play();
             cursorPiece.tpos.x += siz;
         }
 
-        if (keyCode == UP_ARROW && cursorPiece.tpos.z > (-3 * siz)) {
+        if(keyCode == UP_ARROW && cursorPiece.tpos.z > (-3 * siz)) {
             moves.play();
             cursorPiece.tpos.z -= siz;
         }
-        if (keyCode == DOWN_ARROW && cursorPiece.tpos.z < (3 * siz)) {
+        if(keyCode == DOWN_ARROW && cursorPiece.tpos.z < (3 * siz)) {
             moves.play();
             cursorPiece.tpos.z += siz;
         }
 
-        switch (mode) {
+        switch(mode) {
 
-        case 'red':
-            print('Red Wins!');
-            turn = 'END';
-            break
+            case 'red':
+                print('Red Wins!');
+                turn = 'END';
+                break
 
-        case 'white':
-            print('White Wins!');
-            turn = 'END';
-            break
+            case 'white':
+                print('White Wins!');
+                turn = 'END';
+                break
         }
     }
 
@@ -163,7 +163,7 @@ function keyPressed() {
 
 function switchTurn() {
 
-    if (turn == 'white') {
+    if(turn == 'white') {
         turn = 'red';
         cursorPiece.color = 'red'
     } else {
@@ -174,8 +174,8 @@ function switchTurn() {
 }
 
 function whosThere() {
-    for (let piece of pieces) {
-        if (piece.tpos.x == cursorPiece.tpos.x && piece.tpos.z == cursorPiece.tpos.z) return piece;
+    for(let piece of pieces) {
+        if(piece.tpos.x == cursorPiece.tpos.x && piece.tpos.z == cursorPiece.tpos.z) return piece;
     }
     return null;
 }
@@ -187,14 +187,14 @@ function preload() {
 }
 
 function draw() {
-    background(222,184,135);
+    background(222, 184, 135);
     ambientLight(100)
     pointLight(100, 100, 100, windowHeight, -windowWidth, windowHeight)
     scale(scaleSize);
     rotateEverything();
     moveCamera();
-    for (let row = 0; row < a; row += 1) {
-        for (let col = 0; col < b; col += 1) {
+    for(let row = 0; row < a; row += 1) {
+        for(let col = 0; col < b; col += 1) {
             push();
             translate(0, siz / 4, 0);
             let x = (-3.5 * siz) + (col * siz);
@@ -209,7 +209,7 @@ function draw() {
 
     cursorPiece.show();
     cursorPiece.move();
-    for (let piece of pieces) {
+    for(let piece of pieces) {
         piece.show();
         piece.move();
     }
